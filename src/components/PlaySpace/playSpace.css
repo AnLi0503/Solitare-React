@@ -1,8 +1,8 @@
 .menu{
-	width:84%;
+	width:64%;
 }
 .playSpace{
-	width:64%;
+	width:90%;
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	grid-row-gap:1.5rem;
