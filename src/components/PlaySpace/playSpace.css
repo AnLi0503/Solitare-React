@@ -1,0 +1,61 @@
+.menu{
+	width:64%;
+}
+.playSpace{
+	width:64%;
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-row-gap:1.5rem;
+	justify-content: center;
+	justify-items:center;
+}
+
+.myColumn2{
+	position: relative;
+	border-radius: 6%;
+	padding:4%;
+	width:89%;
+}
+
+.myColumn2:before{
+	content:"";
+	float:left;
+	width:100%;
+	padding-top: 142%;
+	border:2px solid rgba(0,0,0, 0.25);;
+	border-radius: 5%;
+}
+
+.myColumn2 > .play-card{
+	position: absolute;
+}
+
+
+
+
+
+
+#mainColumn > .play-card{
+	top:0;
+}
+
+#packColumn > .play-card:not(:first-child){
+	transform: translate(10%);
+}
+
+.finalColumn > .play-card:not(:first-child){
+	position:absolute;
+	top:0;
+	margin:0;
+	transform: translate(0%);
+}
+
+#finalColumn1{
+	grid-column-start: 4
+}
+
+button{
+	margin:4px;
+}
+
+

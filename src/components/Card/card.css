@@ -1,0 +1,9 @@
+.play-card{
+	border-radius: 10%;
+}
+
+.play-card img{
+	width: 97%;
+    height: auto; 
+    position:relative;       
+}
