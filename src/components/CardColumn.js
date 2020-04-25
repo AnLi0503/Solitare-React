@@ -16,6 +16,7 @@ class CardColumn extends Component {
 		let top = -15
 		let columnName = this.props.name 
 		let changeColumn = this.props.changeColumn
+	
 									
 		
 		return this.props.connectDropTarget(

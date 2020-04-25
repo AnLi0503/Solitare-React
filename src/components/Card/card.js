@@ -5,6 +5,14 @@ import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
 import {can_move_on_card} from "../../services/Cards.js"
 
+const cache = {};
+
+function importAll (r) {
+  r.keys().forEach(key =>{ let img=key.slice(2,-4); cache[img] = r(key)});
+}
+importAll(require.context("../../images/PNG",false,/\.png$/))
+// console.log(cache)
+
 
 
 class Card extends Component{
@@ -12,8 +20,8 @@ class Card extends Component{
 	render(){
 		//console.log(this.props)
 		let {name, up, style, index,isDragging,location} = this.props
-	    let img = "../../images/PNG/"+name+".png"
-	    // console.log(this.props)
+	    let img = cache[name]
+	    
 		return this.props.connectDragSource(
 				<div className = "play-card" ref = {this.props.connectDropTarget}
 				     style = {style} id = "">
