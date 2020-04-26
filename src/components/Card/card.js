@@ -5,27 +5,40 @@ import { DragSource } from 'react-dnd'
 import { DropTarget } from 'react-dnd'
 import {can_move_on_card} from "../../services/Cards.js"
 
-const cache = {};
+// const cache = {};
 
-function importAll (r) {
-  r.keys().forEach(key =>{ let img=key.slice(2,-4); cache[img] = r(key)});
-}
-importAll(require.context("../../images/PNG",false,/\.png$/))
+// function importAll (r) {
+//   r.keys().forEach(key =>{ let img=key.slice(2,-4); cache[img] = r(key)});
+// }
+// importAll(require.context("../../images/PNG",false,/\.png$/))
 // console.log(cache)
 
 
 
 class Card extends Component{
+	constructor(props){
+		super(props)
+		this.state = {img:back_img}
+	}
+
+	componentDidMount(){
+		if(this.props.up){
+			import("../../images/PNG/"+this.props.name+".png").then(img2=>this.setState({img:img2.default}))
+		}	
+	}
 
 	render(){
 		//console.log(this.props)
 		let {name, up, style, index,isDragging,location} = this.props
-	    let img = cache[name]
+	    // let img = back_img
+	    // if(up){
+	    // 	import("../../images/PNG/"+name+".png").then(img2=>img = img2.default)
+	    // }
 	    
 		return this.props.connectDragSource(
 				<div className = "play-card" ref = {this.props.connectDropTarget}
 				     style = {style} id = "">
-				     <img id = "as" src = {up?img:back_img} style = {{opacity: isDragging ? 0.5 : 1,}} alt = "hehe"/>
+				     <img id = "as" src = {this.state.img} style = {{opacity: isDragging ? 0.5 : 1,}} alt = "hehe"/>
 				</div>
 				)
 	}
