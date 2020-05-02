@@ -18,11 +18,13 @@ export default class PackColumn extends Component {
 										transform: "translate("+(translateSize+=16)+"%)",
 									}
 									count--
-									let last = count==0?true:false
+									let last = count===0?true:false
+									let autoMove = count===0?this.props.autoMove:()=>{}
 									return <Card name = {card.name} 
 												 up = {card.up}
 												 location = {columnName}
 												 changeColumn = {changeColumn}
+												 autoMove = {autoMove}
 												 key = {card.name}
 												 style = {divStyle}
 												 index = {index}

@@ -6,10 +6,7 @@ import { DndProvider } from 'react-dnd'
 import Backend from 'react-dnd-html5-backend'
 
 function App() {
-  const onDragEnd = (result)=>{
-    // console.log(result)
-  }
-
+  
   return (
     <div className="App">
       <Header />

@@ -6,7 +6,7 @@ import Card from "./Card"
 
 class CardColumn extends Component {
 	getNextCards=(cardName)=>{
-		let index = this.props.cards.findIndex(card=>card.name == cardName)
+		let index = this.props.cards.findIndex(card=>card.name === cardName)
 		if(index>=0){
 			 return this.props.cards.slice(index)
 		}
@@ -16,6 +16,7 @@ class CardColumn extends Component {
 		let top = -15
 		let columnName = this.props.name 
 		let changeColumn = this.props.changeColumn
+		let autoMove = this.props.autoMove
 	
 									
 		
@@ -30,6 +31,7 @@ class CardColumn extends Component {
 									 location = {card.location}
 									 style = {cardStyle}
 									 changeColumn = {changeColumn}
+									 autoMove = {autoMove}
 									 key = {card.name}
 									 getNextCards = {this.getNextCards}
 									 
@@ -54,7 +56,7 @@ export default DropTarget(
 				      if (hasDroppedOnChild) {
 				        return
 				      }
-				    return{location:props.name,empty:true}},
+				    return{location:props.name}},
     canDrop: (props)=>{
     	if(props.cards.length>0){
     		return false

@@ -37,7 +37,7 @@ export default DropTarget(
 				      if (hasDroppedOnChild) {
 				        return
 				      }
-				      return{location:props.name,empty:true}},
+				      return{location:props.name}},
     canDrop: (props)=>{
     	if(props.cards.length>0){
     		return false

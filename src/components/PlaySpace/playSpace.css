@@ -2,7 +2,7 @@
 	width:64%;
 }
 .playSpace{
-	width:90%;
+	width:80%;
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	grid-row-gap:1.5rem;
@@ -43,12 +43,6 @@
 	transform: translate(10%);
 }
 
-.finalColumn > .play-card:not(:first-child){
-	position:absolute;
-	top:0;
-	margin:0;
-	transform: translate(0%);
-}
 
 #finalColumn1{
 	grid-column-start: 4
@@ -59,3 +53,12 @@ button{
 }
 
 
+.play-card{
+	border-radius: 10%;
+}
+
+.play-card img{
+	width: 97%;
+    height: auto; 
+    position:relative;       
+}

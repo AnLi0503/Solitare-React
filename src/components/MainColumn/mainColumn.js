@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import "./mainColumn.css"
 import Card from "../Card" 
-import {Droppable, Draggable} from "react-beautiful-dnd"
+
 
 
 

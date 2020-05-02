@@ -13,7 +13,7 @@ export function getCards(){
 		"JC","JH","JD","JS",
 		"QC","QH","QD","QS",
 		"KC","KH","KD","KS",
-		"AC","AD","AH","AS",
+		"AC","AH","AD","AS",
 	]
 } 
 
@@ -30,30 +30,30 @@ export function getShuffledCards(){
 } 
  
 function isOpposite(t1,t2){
-	if((t1 == "H" || t1 == "D") && (t2 == "C" || t2 == "S"))
+	if((t1 === "H" || t1 === "D") && (t2 === "C" || t2 === "S"))
 		return true
-	if((t2 == "H" || t2 == "D") && (t1 == "C" || t1 == "S"))
+	if((t2 === "H" || t2 === "D") && (t1 === "C" || t1 === "S"))
 		return true
 	return false
 }
 
 function less_than_byOne(v1,v2){
-	const index1 = cardsOrder.findIndex(i=>v1==i)
-	const index2 = cardsOrder.findIndex(i=>v2==i)
-	if(index2 - index1 == 1)
+	const index1 = cardsOrder.findIndex(i=>v1===i)
+	const index2 = cardsOrder.findIndex(i=>v2===i)
+	if(index2 - index1 === 1)
 		return true
 	return false
 }
 
 function more_than_byOne(v1,v2){
-	const index1 = cardsOrder.findIndex(i=>v1==i)
-	const index2 = cardsOrder.findIndex(i=>v2==i)
-	if(index1 - index2 == 1)
+	const index1 = cardsOrder.findIndex(i=>v1===i)
+	const index2 = cardsOrder.findIndex(i=>v2===i)
+	if(index1 - index2 === 1)
 		return true
 	return false
 }
 
-function get_card_value(card){
+export function get_card_value(card){
 	return card.slice(0,-1)
 }
 
@@ -72,32 +72,21 @@ export function can_move_on_card(dragCard,dropCard,location){
   case "cardColumn6":
   case "cardColumn7":
     if(isOpposite(get_card_type(dragCard),get_card_type(dropCard))){
-			if(less_than_byOne(get_card_value(dragCard),get_card_value(dropCard))){
-
-				return true
-			}else{
-				return false
-				
+		if(less_than_byOne(get_card_value(dragCard),get_card_value(dropCard))){
+			return true
 		}
-		 
-			}else{return false}
-    break;
+	}
+	return false
   case "finalColumn1":
   case "finalColumn2":
   case "finalColumn3":
   case "finalColumn4":
-  	if(get_card_type(dragCard) == get_card_type(dropCard)){
-			if(more_than_byOne(get_card_value(dragCard),get_card_value(dropCard))){
-
-				return true
-			}else{
-				return false
-				
-		}
-		 
-			}else{return false}
+  	if(get_card_type(dragCard) === get_card_type(dropCard)){
+		if(more_than_byOne(get_card_value(dragCard),get_card_value(dropCard))){
+			return true
+		} 
+	}
     return false
-    break;
   default:
     // code block
 }
