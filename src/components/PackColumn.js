@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import Card from "./Card"
+import Card from "./DragableCard"
 
 
 export default class PackColumn extends Component {
@@ -29,6 +29,9 @@ export default class PackColumn extends Component {
 												 style = {divStyle}
 												 index = {index}
 												 last = {last} 
+												 isDragging = {card.isDragging}
+												 beginDrag = {this.props.beginDrag}
+								 				 endDrag = {this.props.endDrag}
 												 />
 								
 							})

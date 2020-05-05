@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import { DropTarget } from 'react-dnd'
-import Card from "./Card"
+import Card from "./DragableCard"
 
 
 class FinalColumn extends Component {

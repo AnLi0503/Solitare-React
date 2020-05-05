@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 import { DropTarget } from 'react-dnd'
-import Card from "./Card"
+import Card from "./DragableCard"
 // import Column from "./Column"
 
 
@@ -34,6 +34,9 @@ class CardColumn extends Component {
 									 autoMove = {autoMove}
 									 key = {card.name}
 									 getNextCards = {this.getNextCards}
+									 isDragging = {card.isDragging}
+									 beginDrag = {this.props.beginDrag}
+									 endDrag = {this.props.endDrag}
 									 
 									 />
 					} 
@@ -51,7 +54,6 @@ export default DropTarget(
   "card",
   {
     drop: (props,monitor,component) => {
-    	console.log("drop");
 				      const hasDroppedOnChild = monitor.didDrop()
 				      if (hasDroppedOnChild) {
 				        return

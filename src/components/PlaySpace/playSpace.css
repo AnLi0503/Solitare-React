@@ -2,7 +2,7 @@
 	width:64%;
 }
 .playSpace{
-	width:80%;
+	width:68%;
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	grid-row-gap:1.5rem;
@@ -29,11 +29,6 @@
 .myColumn2 > .play-card{
 	position: absolute;
 }
-
-
-
-
-
 
 #mainColumn > .play-card{
 	top:0;
@@ -62,3 +57,4 @@ button{
     height: auto; 
     position:relative;       
 }
+

@@ -1,4 +1,4 @@
-import undoable from 'redux-undo'
+import undoable, {combineFilters} from 'redux-undo'
 import { combineReducers } from 'redux'
 import {getShuffledCards, getCards} from "./services/Cards.js"
 import {can_move_on_card, get_card_value} from "./services/Cards.js"
@@ -44,18 +44,16 @@ let finalColumns = [{name:"finalColumn1"},{name:"finalColumn2"},{name:"finalColu
   }
 
   function changeColumn(newColumn,oldColumn,dragCards,dropCard,cards){
-      if((isColumnEmpty(newColumn, cards) && newColumn.includes("cardColumn") && dragCards[0].name.slice(0,-1) === "K") ||
-         (isColumnEmpty(newColumn, cards) && newColumn.includes("finalColumn") && dragCards[0].name.slice(0,-1) === "A") ||
-         can_move_on_card(dragCards[0].name,dropCard,newColumn)){
-              dragCards = JSON.parse(JSON.stringify([...dragCards]))
-              cards = cards.filter(card=>!dragCards.some(c => c.name === card.name))
-              dragCards.map(card=>{
-                card.location = newColumn;
-              })
+      dragCards = JSON.parse(JSON.stringify([...dragCards]))
+      cards = JSON.parse(JSON.stringify([...cards]))
+      cards = cards.filter(card=>!dragCards.some(c => c.name === card.name))
+      dragCards.forEach(card=>{
+        card.location = newColumn;
+      })
 
-              cards = [...cards,...dragCards]
-              cards = try_turn_up(oldColumn,cards) 
-      }
+      cards = [...cards,...dragCards]
+      cards = try_turn_up(oldColumn,cards) 
+      
       return cards
   }
 
@@ -73,16 +71,27 @@ let finalColumns = [{name:"finalColumn1"},{name:"finalColumn2"},{name:"finalColu
   }
 
   function getLastCards(cards){
-    let fcCards = {} 
-    cards.filter(card=>{
-      if(card.location.includes("cardColumn") || card.location.includes("finalColumn"))
+    let finalColumns = {}
+    let cardColumns = {} 
+    cards.filter(card=>card.location.includes("finalColumn")).
+          forEach(card=>{finalColumns[card.location] = card})
+    cards.filter(card=>card.location.includes("cardColumn")).
+          forEach(card=>{cardColumns[card.location] = card})
+    
+    
+    return Object.values({...finalColumns,...cardColumns})
+  }
+
+function getNextCards(cardName,cards){
+    let card = cards.find(card=>card.name === cardName)
+    let columnName = card.location
+    let index = cards.findIndex(card=>card.name === cardName)
+    return cards.filter((card,cIndex)=>{
+      if(cIndex>=index && card.location === columnName)
         return true
       return false
-    }).forEach(card=>{
-      fcCards[card.location] = card
     })
-    return Object.values(fcCards)
-  }
+}
 
 const cards = (state = initialstate, action) => {
   let cards = [...state]
@@ -91,7 +100,8 @@ const cards = (state = initialstate, action) => {
         cards =  getShuffledCards().map((card)=> ({
         name:card,
         location:"mainColumn",
-        up:false
+        up:false,
+        isDragging:false,
           })  
     );
       let index = 0;
@@ -107,9 +117,11 @@ const cards = (state = initialstate, action) => {
       return cards
 
     case "changeColumn":{ 
-      console.log(action.arr)
       let {newColumn,oldColumn,dragCards,dropCard} = action.arr
-      cards = [...state]
+      cards = state
+      if((isColumnEmpty(newColumn, cards) && newColumn.includes("cardColumn") && dragCards[0].name.slice(0,-1) === "K") ||
+         (isColumnEmpty(newColumn, cards) && newColumn.includes("finalColumn") && dragCards[0].name.slice(0,-1) === "A") ||
+         (!isColumnEmpty(newColumn, cards) && can_move_on_card(dragCards[0].name,dropCard,newColumn)))
       cards = changeColumn(newColumn,oldColumn,dragCards,dropCard,cards)
       return cards
     }
@@ -129,7 +141,7 @@ const cards = (state = initialstate, action) => {
       }
       
 
-      let fcCards = getLastCards(cards).reverse()
+      let fcCards = getLastCards(cards)
       let moved = false
       fcCards.forEach(dropcard=>{
         if(can_move_on_card(dragCards[0].name,dropcard.name,dropcard.location) && !moved){
@@ -141,7 +153,7 @@ const cards = (state = initialstate, action) => {
       return cards
     }
 
-    case "newPack":
+    case "newPack":{
         cards = JSON.parse(JSON.stringify([...state]))
         cards = backPack(cards)
           let count = 3
@@ -154,17 +166,57 @@ const cards = (state = initialstate, action) => {
             return card
           })
           return cards
+        }
+    case "beginDrag":{
+      let {name} = action
+      cards = [...state]
+      let nextCards = getNextCards(name,cards)
+      nextCards.forEach(card=>{
+          card.isDragging = true
+      })
+      return cards
+    }
+    case "endDrag":{
+      let {name} = action
+      cards = [...state]
+      let nextCards = getNextCards(name,cards)
+      nextCards.forEach(card=>{
+          card.isDragging = false
+      })
+      return cards
+    }
+    case "DummyAction":{
+      console.log("DummyAction")
+      let cards = state
+      return cards
+    }
     default:
       return state;
   }
 };
 
 
+function excludedActios(action){
+  if(action.type === "beginDrag" || action.type === "endDrag")
+    return false
+  return true
+}
+
+function filterState(action, currentState, previousHistory) {
+  // debugger
+    let { past, present, future } = previousHistory;
+    if(action.type === "changeColumn"){
+      if(present === currentState)
+        return false
+    }
+    return true 
+  }
+
 export default combineReducers({
   cards:undoable(cards,{
     undoType: "UNDO_MOVE",
     ignoreInitialState: true,
-    // filter: includeAction(["newPack","changeColumn"]),
+    filter: combineFilters(excludedActios,filterState),
     clearHistoryType:"CLEAR_HISTORY"
   })
 })
