@@ -45,23 +45,16 @@ class playSpace extends Component{
 		const smButton = this.state.isMobile ? 'btn-sm' : '';
 		return (
 			<React.Fragment>
-			<div className = "menu container">
-				<div className = "row">
-				<div className = "col-sm-2 col-xs-2">
-					<button type = "button" className = {"btn btn-secondary btn-block "+smButton}
-					onClick = {()=>{this.props.clearHistory();this.props.newGame()}}>New Game</button>
-				</div>
-				<div className = "col-sm-2 col-xs-2">
-					<button type = "button" className = {"btn btn-secondary btn-block "+smButton} onClick = {this.props.undoMove} 
-					disabled = {!this.props.canUndo}>Back</button>
-				</div>
-				</div>
-     
-			</div>
 			<div className = "playSpace container">
 				<MainColumn onClick = {this.props.newPack} cards = {this.props.cards.filter(card=>card.location === "mainColumn")}/>	
 				<PackColumn name = "packColumn" cards = {this.props.cards.filter(card=>card.location === "packColumn")} changeColumn = {this.props.changeColumn} autoMove = {this.props.autoMove} beginDrag = {this.props.beginDrag} endDrag = {this.props.endDrag}/>
-		  		
+		  		<div className = "buttons">
+					<button type = "button" className = {"btn btn-secondary "+smButton}
+					onClick = {()=>{this.props.clearHistory();this.props.newGame()}}>{'\u27f3'}</button>
+	
+					<button type = "button" className = {"btn btn-secondary "+smButton} onClick = {this.props.undoMove} 
+					disabled = {!this.props.canUndo}>{'\u2b05'}</button>
+				</div>
 		  		<FinalColumn name = "finalColumn1" cards = {this.props.cards.filter(card=>card.location === "finalColumn1")} changeColumn = {this.props.changeColumn} autoMove = {this.props.autoMove} beginDrag = {this.props.beginDrag} endDrag = {this.props.endDrag}/>
 		  		<FinalColumn name = "finalColumn2" cards = {this.props.cards.filter(card=>card.location === "finalColumn2")} changeColumn = {this.props.changeColumn} autoMove = {this.props.autoMove} beginDrag = {this.props.beginDrag} endDrag = {this.props.endDrag}/>
 		  		<FinalColumn name = "finalColumn3" cards = {this.props.cards.filter(card=>card.location === "finalColumn3")} changeColumn = {this.props.changeColumn} autoMove = {this.props.autoMove} beginDrag = {this.props.beginDrag} endDrag = {this.props.endDrag}/>
